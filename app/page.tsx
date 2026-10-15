@@ -1,7 +1,9 @@
 import OrderForm from "./OrderForm";
 import StickyCta from "./StickyCta";
+import Gallery from "./Gallery";
 import {
   FAQ,
+  IN_THE_BOX,
   MARKET_PRICE_TEXT,
   PACKAGES,
   PREPAY_DISCOUNT,
@@ -59,8 +61,13 @@ export default function Home() {
               <h1>Сойз хүрдэггүй завсрыг ус цэвэрлэнэ</h1>
               <p className="lead">
                 Даралттай усан урсгал шүдний завсар, буйлны шугам, брекетийн дундах хоолны үлдэгдлийг
-                1–2 минутад угаана. Цэнэглэдэг, утасгүй, аялалд авч явахад хялбар.
+                1–2 минутад угаана. Багцад сойзоо цэвэр хадгалах UV ариутгагч хамт орно.
               </p>
+              <ul className="inbox">
+                {IN_THE_BOX.map((x) => (
+                  <li key={x}>✓ {x}</li>
+                ))}
+              </ul>
               <div className="price-row">
                 <span className="price-now">{formatMNT(minPrice)}</span>
                 <span className="price-was">Зах зээлд {MARKET_PRICE_TEXT}</span>
@@ -75,16 +82,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="hero-media">
-              {SITE.heroVideo ? (
-                <video className="media" src={SITE.heroVideo} autoPlay muted loop playsInline />
-              ) : SITE.heroImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="media" src={SITE.heroImage} alt={SITE.productName} />
-              ) : (
-                <div className="media-ph" role="img" aria-label="Бүтээгдэхүүний зураг">
-                  <span>Бүтээгдэхүүний зураг / видео</span>
-                </div>
-              )}
+              <Gallery images={SITE.images} video={SITE.heroVideo} alt={SITE.productName} />
             </div>
           </div>
         </section>
@@ -148,8 +146,12 @@ export default function Home() {
               </div>
               <div className="compare-col compare-ours">
                 <h3>{SITE.brand}</h3>
-                <p className="compare-price">{formatMNT(minPrice)}-с</p>
+                <p className="compare-price">
+                  {formatMNT(minPrice)}
+                  {PACKAGES.filter((p) => p.available).length > 1 ? "-с" : ""}
+                </p>
                 <ul>
+                  <li>UV сойз ариутгагч хамт</li>
                   <li>УБ-т үнэгүй хүргэлт</li>
                   <li>Хүргэлтээр төлөх боломжтой</li>
                   <li>Урьдчилж төлбөл −{formatMNT(PREPAY_DISCOUNT)}</li>

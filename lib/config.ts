@@ -8,31 +8,47 @@ export const SITE = {
   // Messenger линк (Warm Nomad пэйж). Урьдчилж төлсөн хүмүүс гүйлгээний зургаа энд илгээнэ.
   messengerUrl: "https://m.me/1323602457501824",
   phone: "", // Жишээ: "9911 2233" — хоосон бол сайт дээр харагдахгүй
-  // Зураг/видео: файлаа public/ хавтас руу хийгээд нэрийг нь энд бич.
-  // Жишээ: heroImage: "/product.jpg"  эсвэл  heroVideo: "/product.mp4"
-  heroImage: "",
-  heroVideo: "",
+  // Зураг: файлуудаа public/images/ хавтас руу хийгээд нэрсийг нь энд бич.
+  // Эхний зураг нүүрэн дээр том харагдана, бусад нь доор нь жижгээр.
+  images: [
+    // Flosser HF-6 (үйлдвэрийн зураг)
+    "https://s.alicdn.com/@sc04/kf/Hbd51be64046849419e0f457f7c56d28c1.jpg",
+    // UV сойз ариутгагч (үйлдвэрийн зураг)
+    "https://s.alicdn.com/@sc04/kf/H2c673acbf3b845d3b9e9d1113ed17e63P.jpg",
+    "https://s.alicdn.com/@sc04/kf/H617d027030eb4b7aa25611da64e03f39J.jpg",
+    "https://s.alicdn.com/@sc04/kf/He104a405400144baaf164f467623671dW.jpg",
+  ] as string[], // Өөрийн зургаа хэрэглэх бол: ["/images/1.jpg", ...]
+  heroVideo: "", // Жишээ: "/images/video.mp4" — байвал эхний зургийн оронд тоглоно
 };
 
 // Багцууд. Үнийг ЗӨВХӨН энд өөрчилнө — сервер ч энэ үнээр тооцоолно.
 export const PACKAGES = [
   {
-    id: "single",
-    title: "Flosser",
-    subtitle: "Усан шүдний цэвэрлэгч + 5 хошуу",
-    price: 79000,
+    id: "bundle",
+    title: "Flosser + UV сойз ариутгагч",
+    subtitle: "Усан шүдний цэвэрлэгч + сойз ариутгах UV хайрцаг",
+    price: 99000,
     badge: "",
     available: true,
   },
   {
-    id: "bundle",
-    title: "Flosser + UV ариутгагч",
-    subtitle: "Сойзоо нян устгагч UV хайрцагт хадгална",
+    // Одоогоор зарахгүй. Дараа нь нээх бол available: true болго.
+    id: "single",
+    title: "Flosser",
+    subtitle: "Усан шүдний цэвэрлэгч + 5 хошуу",
     price: 89000,
-    badge: "Багц",
-    available: true, // Ариутгагч дуусвал false болго
+    badge: "",
+    available: false,
   },
 ] as const;
+
+// Багцад юу орсон бэ — сайт дээр жагсааж харуулна
+export const IN_THE_BOX = [
+  "Усан шүдний цэвэрлэгч (300 мл)",
+  "Солих хошуунууд (хэл цэвэрлэгч орсон)",
+  "USB-C цэнэглэх утас",
+  "UV сойз ариутгагч + оо шахагч",
+];
 
 export type PackageId = (typeof PACKAGES)[number]["id"];
 
@@ -45,7 +61,7 @@ export const MARKET_PRICE_TEXT = "150,000₮+";
 // Урьдчилсан төлбөрийн данс
 export const BANK = {
   bankName: "Голомт банк",
-  accountNumber: "MN170015002705209890", // ← Дансны дугаараа энд бич
+  accountNumber: "XXXXXXXXXX", // ← Дансны дугаараа энд бич
   accountHolder: "Ш. Билгүүн", // ← Данс эзэмшигчийн нэрийг шалгаарай
 };
 
@@ -53,9 +69,9 @@ export const BANK = {
 export const SPECS = [
   { label: "Усны сав", value: "300 мл" },
   { label: "Горим", value: "5 түвшний даралт" },
-  { label: "Цэнэг", value: "USB-C, 2000mAh+ (2–3 долоо хоног)" },
+  { label: "Цэнэг", value: "2500mAh, 2–3 долоо хоног барина" },
   { label: "Ус нэвтрэлт", value: "IPX7 — шүршүүрт хэрэглэж болно" },
-  { label: "Хошуу", value: "4 цэвэрлэх хошуу + 1 хэл цэвэрлэгч" },
+  { label: "Хошуу", value: "Солих хошуунууд, хэл цэвэрлэгчтэй" },
 ];
 
 // Бодит сэтгэгдэл. Хоосон бол хэсэг нь харагдахгүй.

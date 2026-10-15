@@ -99,7 +99,9 @@ export default function OrderForm() {
   return (
     <form className="order-form" onSubmit={onSubmit} noValidate>
       <fieldset>
-        <legend>1. Багцаа сонгоно уу</legend>
+        <legend>
+          {PACKAGES.filter((p) => p.available).length > 1 ? "1. Багцаа сонгоно уу" : "1. Таны багц"}
+        </legend>
         <div className="pkg-list">
           {PACKAGES.filter((p) => p.available).map((p) => (
             <label key={p.id} className={`pkg ${pkg === p.id ? "is-active" : ""}`}>
