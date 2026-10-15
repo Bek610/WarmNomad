@@ -45,7 +45,7 @@ export const MARKET_PRICE_TEXT = "150,000₮+";
 // Урьдчилсан төлбөрийн данс
 export const BANK = {
   bankName: "Голомт банк",
-  accountNumber: "XXXXXXXXXX", // ← Дансны дугаараа энд бич
+  accountNumber: "MN170015002705209890", // ← Дансны дугаараа энд бич
   accountHolder: "Ш. Билгүүн", // ← Данс эзэмшигчийн нэрийг шалгаарай
 };
 
