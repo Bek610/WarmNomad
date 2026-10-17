@@ -100,7 +100,7 @@ export default function OrderForm() {
     <form className="order-form" onSubmit={onSubmit} noValidate>
       <fieldset>
         <legend>
-          {PACKAGES.filter((p) => p.available).length > 1 ? "1. Багцаа сонгоно уу" : "1. Таны багц"}
+          {PACKAGES.filter((p) => p.available).length > 1 ? "1. Юу авах вэ?" : "1. Таны багц"}
         </legend>
         <div className="pkg-list">
           {PACKAGES.filter((p) => p.available).map((p) => (

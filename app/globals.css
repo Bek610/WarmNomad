@@ -177,3 +177,11 @@ legend { font-weight: 800; margin-bottom: 12px; padding: 0; }
   .section { padding: 72px 0; }
   .order-form { padding: 28px; }
 }
+
+/* Тусад нь авах үнэ */
+.price-alt { color: var(--muted); font-size: 0.9rem; margin: -6px 0 16px; }
+/* FAQ видео */
+.faq-videos { display: grid; gap: 10px; margin-top: 12px; }
+.faq-videos-label { font-weight: 600; font-size: 0.9rem; }
+.faq-video { width: 100%; max-width: 360px; aspect-ratio: 9 / 16; border: 0; border-radius: 12px; background: #000; }
+.btn-outline { background: #fff; color: var(--blue); border: 2px solid var(--blue); justify-self: start; }

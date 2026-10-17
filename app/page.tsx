@@ -1,6 +1,7 @@
 import OrderForm from "./OrderForm";
 import StickyCta from "./StickyCta";
 import Gallery from "./Gallery";
+import FaqVideo from "./FaqVideo";
 import {
   FAQ,
   IN_THE_BOX,
@@ -41,7 +42,10 @@ const STEPS = [
 ];
 
 export default function Home() {
-  const minPrice = Math.min(...PACKAGES.filter((p) => p.available).map((p) => p.price));
+  const available = PACKAGES.filter((p) => p.available);
+  const bundle = available.find((p) => p.id === "bundle");
+  const mainPrice = bundle ? bundle.price : Math.min(...available.map((p) => p.price));
+  const singles = available.filter((p) => p.id !== "bundle");
 
   return (
     <>
@@ -69,9 +73,14 @@ export default function Home() {
                 ))}
               </ul>
               <div className="price-row">
-                <span className="price-now">{formatMNT(minPrice)}</span>
-                <span className="price-was">Зах зээлд {MARKET_PRICE_TEXT}</span>
+                <span className="price-now">{formatMNT(mainPrice)}</span>
+                <span className="price-was">{bundle ? "Багцаар · " : ""}Зах зээлд {MARKET_PRICE_TEXT}</span>
               </div>
+              {singles.length > 0 && (
+                <p className="price-alt">
+                  Тусад нь: {singles.map((p) => `${p.title.replace("Зөвхөн ", "")} ${formatMNT(p.price)}`).join(" · ")}
+                </p>
+              )}
               <a href="#order" className="btn btn-primary">
                 Захиалах
               </a>
@@ -146,10 +155,7 @@ export default function Home() {
               </div>
               <div className="compare-col compare-ours">
                 <h3>{SITE.brand}</h3>
-                <p className="compare-price">
-                  {formatMNT(minPrice)}
-                  {PACKAGES.filter((p) => p.available).length > 1 ? "-с" : ""}
-                </p>
+                <p className="compare-price">{formatMNT(mainPrice)}</p>
                 <ul>
                   <li>UV сойз ариутгагч хамт</li>
                   <li>УБ-т үнэгүй хүргэлт</li>
@@ -196,6 +202,14 @@ export default function Home() {
                 <details key={f.q}>
                   <summary>{f.q}</summary>
                   <p>{f.a}</p>
+                  {f.videos && f.videos.length > 0 && (
+                    <div className="faq-videos">
+                      <span className="faq-videos-label">Видеогоор үзэх:</span>
+                      {f.videos.map((v, i) => (
+                        <FaqVideo key={v} src={v} index={i + 1} />
+                      ))}
+                    </div>
+                  )}
                 </details>
               ))}
             </div>
@@ -215,7 +229,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <StickyCta label={`Захиалах · ${formatMNT(minPrice)}`} />
+      <StickyCta label={bundle ? `Захиалах · Багц ${formatMNT(bundle.price)}` : "Захиалах"} />
     </>
   );
 }
