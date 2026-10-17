@@ -33,7 +33,8 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const data = JSON.parse(e.postData.contents);
-    if (data.secret !== SECRET) {
+    // Нууц үгээ солиогүй бол хэнээс ч хүлээж авахгүй
+    if (!SECRET || SECRET === "ӨӨРИЙН_НУУЦ_ҮГ_ЭНД" || data.secret !== SECRET) {
       return json({ ok: false, error: "unauthorized" });
     }
 
@@ -51,23 +52,30 @@ function doPost(e) {
       when,
       data.orderId,
       data.payment === "Урьдчилж" ? "Төлбөр хүлээгдэж байна" : "Шинэ",
-      data.package,
-      data.amount,
-      data.payment,
-      data.location,
-      data.area,
-      data.address,
-      data.name,
-      "'" + data.phone, // тэгээр эхэлсэн тоо алдагдахгүй
-      data.note,
+      safe(data.package),
+      Number(data.amount) || 0,
+      safe(data.payment),
+      safe(data.location),
+      safe(data.area),
+      safe(data.address),
+      safe(data.name),
+      "'" + String(data.phone).replace(/\D/g, ""), // тэгээр эхэлсэн тоо алдагдахгүй
+      safe(data.note),
     ]);
 
     return json({ ok: true });
   } catch (err) {
-    return json({ ok: false, error: String(err) });
+    console.error(err); // Дэлгэрэнгүйг Executions лог-д үлдээж, гадагш гаргахгүй
+    return json({ ok: false, error: "server error" });
   } finally {
     lock.releaseLock();
   }
+}
+
+// Formula injection-аас хамгаална: "=IMPORTXML(...)" гэх мэт утгыг томъёо биш текст болгоно
+function safe(v) {
+  const s = v == null ? "" : String(v);
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
 }
 
 function json(obj) {

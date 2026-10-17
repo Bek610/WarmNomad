@@ -73,7 +73,9 @@ export const COMMON_FAQ = [
 ];
 
 // Meta Pixel ID (заавал биш). Vercel дээр NEXT_PUBLIC_META_PIXEL_ID гэж тохируулна.
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
+// Inline script-д шууд ордог тул зөвхөн цифр байвал ашиглана
+const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
+export const META_PIXEL_ID = /^\d+$/.test(pixelId) ? pixelId : "";
 
 export function formatMNT(n: number) {
   return n.toLocaleString("en-US") + "₮";
