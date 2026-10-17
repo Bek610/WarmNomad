@@ -182,11 +182,8 @@ export const PRODUCTS: Product[] = [
       lead: "Дотроо зузаан хөвөн доторлогоотой, ам хамрын хэсэгтээ салхи нэвтрүүлдэггүй хавтан, амьсгалын хавхлагатай. Толгой, нүүр, хүзүүг нэг дор дулаацуулж, малгай, дуулганы доор өмсөж болно.",
     },
     images: [
-      "https://s.alicdn.com/@sc04/kf/H62b4f2bdc69a457f8217988368a7ad56U.png",
-      "https://s.alicdn.com/@sc04/kf/H8f5c5cfb9c7e4d6f82c9880fa1a042dfL.jpg",
-      "https://s.alicdn.com/@sc04/kf/H5424fed6965a4a0dba3cf6d191260c624.jpg",
-      "https://s.alicdn.com/@sc04/kf/H007a82f02f224e199153975ece52426fG.jpg",
-      "https://s.alicdn.com/@sc04/kf/H1e3d8e0c6f764f24842e0e46f9ea5f2bG.jpg",
+      "/mask/1.jpg",
+      "/mask/2.jpg",
     ],
     video: "",
     mainPackageId: "mask1",
