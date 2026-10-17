@@ -4,9 +4,8 @@ import "./globals.css";
 import { META_PIXEL_ID, SITE } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: `${SITE.productName} | ${SITE.brand}`,
-  description:
-    "Шүдний завсар, буйлыг даралттай усаар цэвэрлэнэ. Улаанбаатарт үнэгүй хүргэлт, хүргэлтээр төлөх боломжтой.",
+  title: `${SITE.brand} — ${SITE.tagline}`,
+  description: "Улаанбаатарт үнэгүй хүргэлт, хүргэлтээр төлөх боломжтой онлайн дэлгүүр.",
 };
 
 export const viewport: Viewport = {

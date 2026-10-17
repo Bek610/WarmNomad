@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { AIMAGS, PACKAGES, PREPAY_DISCOUNT, UB_DISTRICTS } from "@/lib/config";
+import { AIMAGS, PREPAY_DISCOUNT, UB_DISTRICTS } from "@/lib/config";
+import { getProduct } from "@/lib/products";
 
 // Vercel дээр тохируулах орчны хувьсагчид:
 //   GOOGLE_SCRIPT_URL  — Google Apps Script web app-ийн URL
@@ -32,7 +33,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ orderId: orderId(), amount: 0, payment: "cod", packageTitle: "" });
   }
 
-  const pkg = PACKAGES.find((p) => p.id === body.packageId && p.available);
+  const product = getProduct(clip(body.productSlug, 40) || "flosser");
+  const pkg = product?.packages.find((p) => p.id === body.packageId && p.available);
   const location = body.location === "countryside" ? "countryside" : body.location === "ub" ? "ub" : null;
   const payment = location === "countryside" ? "prepay" : body.payment === "prepay" ? "prepay" : "cod";
   const name = clip(body.name, 80);

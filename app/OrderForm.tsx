@@ -1,16 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  AIMAGS,
-  BANK,
-  PACKAGES,
-  PREPAY_DISCOUNT,
-  SITE,
-  UB_DISTRICTS,
-  formatMNT,
-  type PackageId,
-} from "@/lib/config";
+import { AIMAGS, BANK, PREPAY_DISCOUNT, SITE, UB_DISTRICTS, formatMNT } from "@/lib/config";
+import type { Pkg } from "@/lib/products";
 
 type Location = "ub" | "countryside";
 type Payment = "cod" | "prepay";
@@ -28,10 +20,20 @@ declare global {
   }
 }
 
-export default function OrderForm() {
-  const firstAvailable = PACKAGES.find((p) => p.available)?.id ?? "single";
-  const [pkg, setPkg] = useState<PackageId>(
-    PACKAGES.find((p) => p.id === "bundle" && p.available) ? "bundle" : firstAvailable
+export default function OrderForm({
+  productSlug,
+  productName,
+  packages,
+  defaultPackageId,
+}: {
+  productSlug: string;
+  productName: string;
+  packages: Pkg[];
+  defaultPackageId: string;
+}) {
+  const PACKAGES = packages.filter((p) => p.available);
+  const [pkg, setPkg] = useState<string>(
+    PACKAGES.find((p) => p.id === defaultPackageId)?.id ?? PACKAGES[0]?.id ?? ""
   );
   const [location, setLocation] = useState<Location>("ub");
   const [payment, setPayment] = useState<Payment>("cod");
@@ -67,6 +69,7 @@ export default function OrderForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          productSlug,
           packageId: pkg,
           location,
           payment: effectivePayment,
@@ -81,7 +84,12 @@ export default function OrderForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Алдаа гарлаа");
       setResult(data);
-      window.fbq?.("track", "Lead", { value: data.amount, currency: "MNT" });
+      window.fbq?.("track", "Lead", {
+        value: data.amount,
+        currency: "MNT",
+        content_name: productName,
+        content_category: productSlug,
+      });
       window.scrollTo({ top: document.getElementById("order")!.offsetTop - 12, behavior: "smooth" });
     } catch (err) {
       setError(
@@ -100,10 +108,10 @@ export default function OrderForm() {
     <form className="order-form" onSubmit={onSubmit} noValidate>
       <fieldset>
         <legend>
-          {PACKAGES.filter((p) => p.available).length > 1 ? "1. Юу авах вэ?" : "1. Таны багц"}
+          {PACKAGES.length > 1 ? "1. Юу авах вэ?" : "1. Таны багц"}
         </legend>
         <div className="pkg-list">
-          {PACKAGES.filter((p) => p.available).map((p) => (
+          {PACKAGES.map((p) => (
             <label key={p.id} className={`pkg ${pkg === p.id ? "is-active" : ""}`}>
               <input
                 type="radio"

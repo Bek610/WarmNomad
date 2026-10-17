@@ -10,7 +10,7 @@
  *    → Deploy → гарч ирсэн URL-ийг Vercel-ийн GOOGLE_SCRIPT_URL-д тавина.
  */
 
-const SECRET = "wn-55f6cc3ae6f5";
+const SECRET = "ӨӨРИЙН_НУУЦ_ҮГ_ЭНД";
 const SHEET_NAME = "Захиалга";
 
 const HEADERS = [
