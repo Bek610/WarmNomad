@@ -7,6 +7,7 @@ import FaqVideo from "../FaqVideo";
 import { Footer, Header, ProductCard, TRUST } from "../Shell";
 import { COMMON_FAQ, PREPAY_DISCOUNT, SITE, formatMNT } from "@/lib/config";
 import { type Faq, getProduct, liveProducts, mainPrice } from "@/lib/products";
+import { getStock, packageLeft } from "@/lib/stock";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -15,6 +16,7 @@ export function generateStaticParams() {
 }
 
 export const dynamicParams = false;
+export const revalidate = 60; // үлдэгдэл минут тутам шинэчлэгдэнэ
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const p = getProduct((await params).slug);
@@ -29,6 +31,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ProductPage({ params }: Params) {
   const p = getProduct((await params).slug);
   if (!p) notFound();
+  const stock = await getStock();
 
   const pkgs = p.packages.filter((k) => k.available);
   const main = pkgs.find((k) => k.id === p.mainPackageId) ?? pkgs[0];
@@ -60,6 +63,15 @@ export default async function ProductPage({ params }: Params) {
                   {p.compare ? ` · Зах зээлд ${p.compare.marketText}` : ""}
                 </span>
               </div>
+              {(() => {
+                const n = packageLeft(main.uses, stock);
+                if (n === null) return null;
+                return (
+                  <p className={`hero-stock ${n === 0 ? "is-out" : n <= 5 ? "is-low" : ""}`}>
+                    {n === 0 ? "Түр дууссан" : `Үлдэгдэл: ${n} ширхэг`}
+                  </p>
+                );
+              })()}
               {others.length > 0 && (
                 <p className="price-alt">
                   Мөн: {others.map((k) => `${k.title} ${formatMNT(k.price)}`).join(" · ")}
@@ -181,6 +193,7 @@ export default async function ProductPage({ params }: Params) {
               productName={p.name}
               packages={p.packages}
               defaultPackageId={p.mainPackageId}
+              stock={stock}
             />
           </div>
         </section>

@@ -119,6 +119,13 @@ legend { font-weight: 800; margin-bottom: 12px; padding: 0; }
 .pkg-title { font-weight: 700; }
 .pkg-sub { color: var(--muted); font-size: 0.85rem; }
 .pkg-price { font-weight: 800; white-space: nowrap; }
+.pkg-stock { font-size: 0.8rem; font-weight: 600; color: #15803d; margin-top: 2px; }
+.pkg-stock.is-low { color: #c2410c; }
+.pkg-stock.is-out { color: #b91c1c; }
+.pkg.is-out { opacity: 0.55; cursor: not-allowed; background: #f8fafc; }
+.hero-stock { font-weight: 700; color: #15803d; margin: 4px 0 8px; }
+.hero-stock.is-low { color: #c2410c; }
+.hero-stock.is-out { color: #b91c1c; }
 .pay span { display: flex; flex-direction: column; }
 .pay small { color: var(--muted); }
 .pay-note { background: var(--blue-soft); border-radius: 12px; padding: 12px 14px; margin: 0; }

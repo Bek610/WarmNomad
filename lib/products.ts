@@ -4,6 +4,8 @@
 //  Үнийг ЗӨВХӨН энд өөрчилнө — сервер ч энэ үнээр тооцоолно.
 // ============================================================
 
+import type { StockKey } from "./stock";
+
 export type Pkg = {
   id: string;
   title: string; // Google Sheet-ийн "Багц" баганад яг ингэж бичигдэнэ
@@ -11,6 +13,7 @@ export type Pkg = {
   price: number;
   badge?: string;
   available: boolean;
+  uses: Partial<Record<StockKey, number>>; // нэг захиалгад агуулахаас хэдэн ширхэг гарах вэ
 };
 
 export type Faq = { q: string; a: string; videos?: string[] };
@@ -35,6 +38,35 @@ export type Product = {
   reviews: { name: string; text: string }[]; // ЗӨВХӨН жинхэнэ сэтгэгдэл
   faq: Faq[];
 };
+
+// Flosser болон UV хуудсанд ижил 3 сонголт харагдана
+const DENTAL_PACKAGES: Pkg[] = [
+  {
+    id: "bundle",
+    title: "Багц: Flosser + UV ариутгагч",
+    subtitle: "Усан шүдний цэвэрлэгч + сойз ариутгах UV хайрцаг",
+    price: 99000,
+    badge: "Тусад нь авахаас 39,000₮ хямд",
+    available: true,
+    uses: { flosser: 1, uv: 1 },
+  },
+  {
+    id: "single",
+    title: "Зөвхөн Flosser",
+    subtitle: "Усан шүдний цэвэрлэгч + 5 хошуу",
+    price: 89000,
+    available: true,
+    uses: { flosser: 1 },
+  },
+  {
+    id: "sanitizer",
+    title: "Зөвхөн UV ариутгагч",
+    subtitle: "Сойз ариутгах UV хайрцаг + оо шахагч",
+    price: 49000,
+    available: true,
+    uses: { uv: 1 },
+  },
+];
 
 export const PRODUCTS: Product[] = [
   // ---------------------------------------------------------------- FLOSSER
@@ -63,30 +95,7 @@ export const PRODUCTS: Product[] = [
     ],
     video: "",
     mainPackageId: "bundle",
-    packages: [
-      {
-        id: "bundle",
-        title: "Багц: Flosser + UV ариутгагч",
-        subtitle: "Усан шүдний цэвэрлэгч + сойз ариутгах UV хайрцаг",
-        price: 99000,
-        badge: "Тусад нь авахаас 39,000₮ хямд",
-        available: true,
-      },
-      {
-        id: "single",
-        title: "Зөвхөн Flosser",
-        subtitle: "Усан шүдний цэвэрлэгч + 5 хошуу",
-        price: 89000,
-        available: true,
-      },
-      {
-        id: "sanitizer",
-        title: "Зөвхөн UV ариутгагч",
-        subtitle: "Сойз ариутгах UV хайрцаг + оо шахагч",
-        price: 49000,
-        available: true,
-      },
-    ],
+    packages: DENTAL_PACKAGES,
     inTheBox: [
       "Усан шүдний цэвэрлэгч (300 мл)",
       "5 солих хошуу (брекет, буйл, хэл цэвэрлэгч)",
@@ -194,6 +203,7 @@ export const PRODUCTS: Product[] = [
         subtitle: "Хар өнгө · Free size",
         price: 35000,
         available: true,
+        uses: { mask: 1 },
       },
       {
         id: "mask2",
@@ -202,6 +212,7 @@ export const PRODUCTS: Product[] = [
         price: 59000,
         badge: "11,000₮ хэмнэнэ",
         available: true,
+        uses: { mask: 2 },
       },
     ],
     inTheBox: [
@@ -286,16 +297,8 @@ export const PRODUCTS: Product[] = [
     },
     images: ["/uv/1.png"],
     video: "",
-    mainPackageId: "uv1",
-    packages: [
-      {
-        id: "uv1",
-        title: "UV ариутгагч",
-        subtitle: "Сойз ариутгах UV хайрцаг + оо шахагч",
-        price: 49000,
-        available: true,
-      },
-    ],
+    mainPackageId: "sanitizer",
+    packages: DENTAL_PACKAGES,
     inTheBox: ["UV сойз ариутгагч + оо шахагч"],
     problemsTitle: "Танд аль нь тохиолдож байна вэ?",
     problems: [

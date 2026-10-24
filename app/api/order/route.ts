@@ -76,6 +76,7 @@ export async function POST(req: Request) {
     name,
     phone,
     note,
+    items: pkg.uses, // скрипт "Үлдэгдэл" хуудаснаас хасна
   };
 
   if (!SCRIPT_URL || !SECRET) {
@@ -87,6 +88,7 @@ export async function POST(req: Request) {
     );
   }
 
+  let outOfStock = false;
   try {
     const res = await fetch(SCRIPT_URL, {
       method: "POST",
@@ -97,12 +99,20 @@ export async function POST(req: Request) {
     const text = await res.text();
     let ok = res.ok;
     try {
-      ok = ok && JSON.parse(text).ok === true;
+      const data = JSON.parse(text);
+      ok = ok && data.ok === true;
+      outOfStock = data.error === "out_of_stock";
     } catch {
       ok = false;
     }
     if (!ok) throw new Error(`Sheet error: ${res.status} ${text.slice(0, 200)}`);
   } catch (err) {
+    if (outOfStock) {
+      return NextResponse.json(
+        { error: "Уучлаарай, энэ сонголт дөнгөж сая дууслаа. Өөр сонголт хийнэ үү эсвэл Messenger-ээр бичнэ үү." },
+        { status: 409 }
+      );
+    }
     console.error("Захиалга хадгалахад алдаа:", err, row);
     return NextResponse.json(
       { error: "Захиалга хадгалахад алдаа гарлаа. Дахин оролдох эсвэл Messenger-ээр бичнэ үү." },

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { AIMAGS, BANK, PREPAY_DISCOUNT, SITE, UB_DISTRICTS, formatMNT } from "@/lib/config";
 import type { Pkg } from "@/lib/products";
+import { type Stock, packageLeft } from "@/lib/stock";
 
 type Location = "ub" | "countryside";
 type Payment = "cod" | "prepay";
@@ -25,15 +26,20 @@ export default function OrderForm({
   productName,
   packages,
   defaultPackageId,
+  stock,
 }: {
   productSlug: string;
   productName: string;
   packages: Pkg[];
   defaultPackageId: string;
+  stock: Stock | null;
 }) {
   const PACKAGES = packages.filter((p) => p.available);
+  const left = (p: Pkg) => packageLeft(p.uses, stock);
+  const inStock = (p: Pkg) => left(p) !== 0;
+  const preferred = PACKAGES.find((p) => p.id === defaultPackageId);
   const [pkg, setPkg] = useState<string>(
-    PACKAGES.find((p) => p.id === defaultPackageId)?.id ?? PACKAGES[0]?.id ?? ""
+    (preferred && inStock(preferred) ? preferred : PACKAGES.find(inStock) ?? preferred ?? PACKAGES[0])?.id ?? ""
   );
   const [location, setLocation] = useState<Location>("ub");
   const [payment, setPayment] = useState<Payment>("cod");
@@ -62,6 +68,7 @@ export default function OrderForm({
     if (!/^[5-9]\d{7}$/.test(cleanPhone)) return setError("Утасны дугаар 8 оронтой байх ёстой.");
     if (!area) return setError(location === "ub" ? "Дүүргээ сонгоно уу." : "Аймгаа сонгоно уу.");
     if (address.trim().length < 5) return setError("Хаягаа дэлгэрэнгүй бичнэ үү.");
+    if (!inStock(selected)) return setError("Энэ сонголт түр дууссан байна.");
 
     setSubmitting(true);
     try {
@@ -111,23 +118,33 @@ export default function OrderForm({
           {PACKAGES.length > 1 ? "1. Юу авах вэ?" : "1. Таны багц"}
         </legend>
         <div className="pkg-list">
-          {PACKAGES.map((p) => (
-            <label key={p.id} className={`pkg ${pkg === p.id ? "is-active" : ""}`}>
+          {PACKAGES.map((p) => {
+            const n = left(p);
+            const out = n === 0;
+            return (
+            <label key={p.id} className={`pkg ${pkg === p.id ? "is-active" : ""} ${out ? "is-out" : ""}`}>
               <input
                 type="radio"
                 name="pkg"
                 value={p.id}
                 checked={pkg === p.id}
+                disabled={out}
                 onChange={() => setPkg(p.id)}
               />
               <span className="pkg-body">
-                {p.badge && <span className="pkg-badge">{p.badge}</span>}
+                {p.badge && !out && <span className="pkg-badge">{p.badge}</span>}
                 <span className="pkg-title">{p.title}</span>
                 <span className="pkg-sub">{p.subtitle}</span>
+                {n !== null && (
+                  <span className={`pkg-stock ${out ? "is-out" : n <= 5 ? "is-low" : ""}`}>
+                    {out ? "Түр дууссан" : `Үлдэгдэл: ${n} ширхэг`}
+                  </span>
+                )}
               </span>
               <span className="pkg-price">{formatMNT(p.price)}</span>
             </label>
-          ))}
+            );
+          })}
         </div>
       </fieldset>
 
@@ -246,8 +263,8 @@ export default function OrderForm({
 
       {error && <p className="form-error" role="alert">{error}</p>}
 
-      <button className="btn btn-primary btn-block" type="submit" disabled={submitting}>
-        {submitting ? "Илгээж байна…" : "Захиалга өгөх"}
+      <button className="btn btn-primary btn-block" type="submit" disabled={submitting || !inStock(selected)}>
+        {submitting ? "Илгээж байна…" : inStock(selected) ? "Захиалга өгөх" : "Түр дууссан"}
       </button>
       <p className="fine">Захиалга өгснөөр бид тантай утсаар холбогдож баталгаажуулна.</p>
     </form>
