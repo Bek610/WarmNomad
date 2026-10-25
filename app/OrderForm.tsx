@@ -91,12 +91,17 @@ export default function OrderForm({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Алдаа гарлаа");
       setResult(data);
-      window.fbq?.("track", "Lead", {
+      // Sales кампани "Purchase"-ээр оновчлогдоно (захиалга = худалдан авалт, төлбөр хүргэлтээр ч байсан)
+      const fbData = {
         value: data.amount,
         currency: "MNT",
         content_name: productName,
         content_category: productSlug,
-      });
+        content_ids: [`${productSlug}-${pkg}`],
+        content_type: "product",
+      };
+      window.fbq?.("track", "Purchase", fbData, { eventID: data.orderId });
+      window.fbq?.("track", "Lead", fbData);
       window.scrollTo({ top: document.getElementById("order")!.offsetTop - 12, behavior: "smooth" });
     } catch (err) {
       setError(

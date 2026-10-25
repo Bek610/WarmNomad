@@ -54,7 +54,7 @@ reviews: [{ name: "Сарнай, БЗД", text: "Брекетийн завсар
 `lib/products.ts` дотор тухайн багцын `available: false` болго. Бүхэл бараа дуусвал барааны `available: false`.
 
 ## Facebook Pixel (заавал биш)
-Vercel-д `NEXT_PUBLIC_META_PIXEL_ID` нэмбэл хүн захиалга өгөх бүрт Facebook руу **Lead** гэсэн үйлдэл илгээнэ. Ингэвэл реклам "мессеж" биш, **захиалга** авахаар оновчлогдоно.
+Vercel-д `NEXT_PUBLIC_META_PIXEL_ID` нэмбэл хүн захиалга өгөх бүрт Facebook руу **Purchase** (мөн Lead) гэсэн үйлдэл илгээнэ. Sales кампанид Conversion event = Purchase сонгоно. Ингэвэл реклам "мессеж" биш, **захиалга** авахаар оновчлогдоно.
 
 ## Дараагийн шат: QPay
 QPay merchant гэрээ гарсны дараа `app/api/` дотор нэхэмжлэх үүсгэх болон төлбөр шалгах route нэмнэ.
