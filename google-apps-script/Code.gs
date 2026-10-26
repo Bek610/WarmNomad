@@ -98,9 +98,13 @@ function doPost(e) {
 // Сайт үлдэгдлийг уншина: GET ...?action=stock
 function doGet(e) {
   if (!e || !e.parameter || e.parameter.action !== "stock") return json({ ok: false });
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  getOrderSheet(ss);
-  return json({ ok: true, stock: readStock(getStockSheet(ss)) });
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    return json({ ok: true, stock: readStock(getStockSheet(ss)) });
+  } catch (err) {
+    console.error(err);
+    return json({ ok: false, error: "server error" });
+  }
 }
 
 /** "Үлдэгдэл" баганыг { mask: 40, ... } болгож уншина */
@@ -120,17 +124,23 @@ function getOrderSheet(ss) {
     sheet = ss.insertSheet(SHEET_NAME);
     sheet.setFrozenRows(1);
   }
-  const all = HEADERS.concat(ITEMS.map((it) => it.header));
-  const current = sheet.getRange(1, 1, 1, all.length).getValues()[0];
-  if (current.join("|") !== all.join("|")) {
-    sheet.getRange(1, 1, 1, all.length).setValues([all]).setFontWeight("bold");
-  }
-  // Төлөв баганад сонголт (Цуцалсан гэх мэт)
-  const status = sheet.getRange(2, 3, sheet.getMaxRows() - 1, 1);
-  if (!status.getDataValidation()) {
-    status.setDataValidation(
-      SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).setAllowInvalid(true).build()
-    );
+  // Хуудсыг Table (Format → Convert to table) болгосон бол толгой, сонголтыг Table өөрөө удирдана.
+  // Тэр үед эдгээрийг өөрчлөх гэвэл "typed columns" алдаа гарна → алгасаад захиалгаа хадгална.
+  try {
+    const all = HEADERS.concat(ITEMS.map((it) => it.header));
+    const current = sheet.getRange(1, 1, 1, all.length).getValues()[0];
+    if (current.join("|") !== all.join("|")) {
+      sheet.getRange(1, 1, 1, all.length).setValues([all]).setFontWeight("bold");
+    }
+    // Төлөв баганад сонголт (Цуцалсан гэх мэт)
+    const status = sheet.getRange(2, 3, sheet.getMaxRows() - 1, 1);
+    if (!status.getDataValidation()) {
+      status.setDataValidation(
+        SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).setAllowInvalid(true).build()
+      );
+    }
+  } catch (err) {
+    console.warn("Захиалга хуудсын тохиргоог алгаслаа: " + err);
   }
   return sheet;
 }
