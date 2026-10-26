@@ -21,8 +21,12 @@ export function Footer() {
       <div className="wrap">
         <p>
           © {new Date().getFullYear()} {SITE.brand}
-          {SITE.phone && <> · {SITE.phone}</>}
         </p>
+        {SITE.phone && (
+          <p>
+            Холбогдох утас: <a href={`tel:+976${SITE.phone.replace(/\D/g, "")}`}>{SITE.phone}</a>
+          </p>
+        )}
         <a href={SITE.messengerUrl} target="_blank" rel="noopener noreferrer">
           Messenger-ээр холбогдох
         </a>
