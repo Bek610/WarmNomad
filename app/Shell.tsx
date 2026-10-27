@@ -7,10 +7,11 @@ export function Header() {
     <header className="topbar">
       <div className="wrap topbar-inner">
         <Link href="/" className="logo">
-          <svg className="logo-mark" viewBox="0 0 32 20" aria-hidden="true">
-            <path d="M1 19 L11 5 L16 11 L21 3 L31 19 Z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+          <svg className="logo-mark" viewBox="3 24 94 62" aria-hidden="true">
+            <path d="M5 84 L35 28 L50 54 L65 28 L95 84Z" fill="currentColor" />
+            <path d="M50 47 C43 59 39 70 42.5 84 L57.5 84 C61 70 57 59 50 47Z" fill="#e5482c" />
           </svg>
-          {SITE.brand}
+          <span className="logo-word">{SITE.brand}</span>
         </Link>
         <span className="pill">Үнэгүй хүргэлт</span>
       </div>
