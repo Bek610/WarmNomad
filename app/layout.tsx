@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import "@fontsource-variable/oswald/wght.css";
+import "@fontsource/golos-text/400.css";
+import "@fontsource/golos-text/500.css";
+import "@fontsource/golos-text/600.css";
+import "@fontsource/golos-text/700.css";
 import "./globals.css";
 import { META_PIXEL_ID, SITE } from "@/lib/config";
 
@@ -11,7 +16,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b5fd7",
+  themeColor: "#1b1d22",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
