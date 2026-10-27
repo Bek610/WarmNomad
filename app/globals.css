@@ -62,7 +62,7 @@ a { color: var(--ember-deep); }
 .topbar { position: sticky; top: 0; z-index: 20; background: var(--night); color: #fff; }
 .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 58px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-family: var(--display); font-weight: 600; font-size: 1.3rem; letter-spacing: 0.01em; }
-.logo-mark { width: 34px; height: 22px; color: #fff; flex: 0 0 auto; }
+.logo-mark { width: 36px; height: 25px; color: #fff; flex: 0 0 auto; }
 .logo-word { text-transform: uppercase; letter-spacing: 0.03em; }
 .pill { color: #c9ccd2; font-size: 0.85rem; font-weight: 500; }
 
