@@ -7,6 +7,9 @@ export function Header() {
     <header className="topbar">
       <div className="wrap topbar-inner">
         <Link href="/" className="logo">
+          <svg className="logo-mark" viewBox="0 0 32 20" aria-hidden="true">
+            <path d="M1 19 L11 5 L16 11 L21 3 L31 19 Z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+          </svg>
           {SITE.brand}
         </Link>
         <span className="pill">Үнэгүй хүргэлт</span>
@@ -49,11 +52,11 @@ export function ProductCard({ p }: { p: Product }) {
         <div className="product-card-foot">
           <strong>{formatMNT(main)}</strong>
           {multi && lowest < main && <span className="muted small">{formatMNT(lowest)}-с</span>}
-          <span className="product-card-cta">Үзэх →</span>
+          <span className="product-card-cta">Дэлгэрэнгүй</span>
         </div>
       </div>
     </Link>
   );
 }
 
-export const TRUST = ["🚚 УБ-т үнэгүй хүргэлт", "💵 Хүргэлтээр төлөх боломжтой", "🔁 Гэмтэлтэй бол 7 хоногт солино"];
+export const TRUST = ["УБ-т үнэгүй хүргэлт", "Хүргэлтээр төлөх боломжтой", "Гэмтэлтэй бол 7 хоногт солино"];

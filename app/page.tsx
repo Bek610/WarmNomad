@@ -12,7 +12,6 @@ export default function Home() {
       <main>
         <section className="hero hero-shop">
           <div className="wrap">
-            <p className="eyebrow">{SITE.brand}</p>
             <h1>{SITE.tagline}</h1>
             <p className="lead">Улаанбаатарт үнэгүй хүргэнэ. Бараагаа хүлээн аваад төлнө.</p>
             <ul className="chips">
@@ -21,6 +20,9 @@ export default function Home() {
               ))}
             </ul>
           </div>
+          <svg className="hero-ridge" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 90 L0 62 L120 40 L230 58 L360 18 L470 50 L600 30 L720 64 L850 22 L980 54 L1110 34 L1240 60 L1350 26 L1440 46 L1440 90 Z" />
+          </svg>
         </section>
 
         <section className="section">

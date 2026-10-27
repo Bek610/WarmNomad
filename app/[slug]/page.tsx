@@ -53,14 +53,14 @@ export default async function ProductPage({ params }: Params) {
               <p className="lead">{p.hero.lead}</p>
               <ul className="inbox">
                 {p.inTheBox.map((x) => (
-                  <li key={x}>✓ {x}</li>
+                  <li key={x}>{x}</li>
                 ))}
               </ul>
               <div className="price-row">
                 <span className="price-now">{formatMNT(main.price)}</span>
                 <span className="price-was">
                   {main.title}
-                  {p.compare ? ` · Зах зээлд ${p.compare.marketText}` : ""}
+                  {p.compare ? `, зах зээлд ${p.compare.marketText}` : ""}
                 </span>
               </div>
               {(() => {
@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: Params) {
               })()}
               {others.length > 0 && (
                 <p className="price-alt">
-                  Мөн: {others.map((k) => `${k.title} ${formatMNT(k.price)}`).join(" · ")}
+                  Мөн: {others.map((k) => `${k.title} ${formatMNT(k.price)}`).join(", ")}
                 </p>
               )}
               <a href="#order" className="btn btn-primary">
@@ -90,6 +90,9 @@ export default async function ProductPage({ params }: Params) {
               <Gallery images={p.images} video={p.video} alt={p.name} />
             </div>
           </div>
+          <svg className="hero-ridge" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 90 L0 62 L120 40 L230 58 L360 18 L470 50 L600 30 L720 64 L850 22 L980 54 L1110 34 L1240 60 L1350 26 L1440 46 L1440 90 Z" />
+          </svg>
         </section>
 
         {/* PROBLEM → SOLUTION */}
@@ -99,12 +102,9 @@ export default async function ProductPage({ params }: Params) {
             <div className="cards">
               {p.problems.map((x) => (
                 <article className="card" key={x.title}>
-                  <span className="card-icon" aria-hidden="true">
-                    {x.icon}
-                  </span>
                   <h3>{x.title}</h3>
                   <p className="muted">{x.problem}</p>
-                  <p className="solution">→ {x.solution}</p>
+                  <p className="solution">{x.solution}</p>
                 </article>
               ))}
             </div>
@@ -236,7 +236,7 @@ export default async function ProductPage({ params }: Params) {
         )}
       </main>
       <Footer />
-      <StickyCta label={`Захиалах · ${formatMNT(main.price)}`} />
+      <StickyCta label={`Захиалах (${formatMNT(main.price)})`} />
     </>
   );
 }
